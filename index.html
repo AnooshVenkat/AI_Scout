@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Scout AI</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: system-ui, sans-serif; background-color: #f4f7f6; margin: 2rem; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #0c4a6e; }
+        .input-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        input { padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+        button { padding: 0.75rem; background-color: #007bff; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
+        #response-container { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 1.5rem; min-height: 100px; line-height: 1.7; color: #343a40; }
+        #response-container table { width: 100%; border-collapse: collapse; margin-top: 1em; margin-bottom: 1em; }
+        #response-container th, #response-container td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        #response-container th { background-color: #e9ecef; font-weight: bold; }
+        #response-container tr:nth-child(even) { background-color: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏀 Smart Scout AI</h1>
+        <div class="input-grid">
+            <input type="text" id="query-input" placeholder="Ask any NBA question...">
+            <button id="scout-button">Scout</button>
+        </div>
+        <div id="response-container">Your scouting report will appear here...</div>
+    </div>
+    <script>
+        const queryInput = document.getElementById('query-input');
+        const scoutButton = document.getElementById('scout-button');
+        const responseContainer = document.getElementById('response-container');
+        async function getScoutingReport() {
+            const query = queryInput.value;
+            if (!query) { alert("Please enter a question."); return; }
+            scoutButton.disabled = true;
+            responseContainer.innerHTML = '🧠 Analyzing data...';
+            try {
+                const response = await fetch('/scout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query }),
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                responseContainer.innerHTML = marked.parse(data.response);
+            } catch (error) {
+                responseContainer.textContent = 'An error occurred. Please check the console.';
+            } finally {
+                scoutButton.disabled = false;
+            }
+        }
+        scoutButton.addEventListener('click', getScoutingReport);
+        queryInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') { getScoutingReport(); } });
+    </script>
+</body>
+</html>

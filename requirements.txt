@@ -1,0 +1,8 @@
+nba_api
+pandas
+sentence-transformers
+chromadb
+fastapi
+uvicorn
+python-dotenv
+google-generativeai
