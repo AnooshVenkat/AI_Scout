@@ -8,7 +8,7 @@ An advanced, conversational AI platform providing deep, precise analysis of NBA 
 
 * **💬 Natural Language Interface:** Ask complex questions in plain English. The AI understands context and delivers nuanced answers.
 * **🧮 Precise Quantitative Analysis:** Performs on-the-fly calculations for averages, totals, career highs, and seasonal progressions across a wide range of stats.
-* **📚 Deep Contextual Insights:** Analyzes data from every regular season game for every active player, providing rich, context-aware answers.
+* **📚 Deep Contextual Insights:** Analyzes data from every regular season and playoff game for every active player, providing rich, context-aware answers.
 * **🎨 Automated Professional Formatting:** Responses are delivered in clean Markdown, including tables and lists, perfect for direct use in reports.
 * **🔄 Resumable Data Pipeline:** The robust data ingestion engine is resumable, capable of handling network errors and building a massive database over time.
 * **🧠 Hybrid AI Architecture:** Combines Retrieval-Augmented Generation (RAG) with LLM Function Calling for the best of both worlds: narrative insight and mathematical precision.
@@ -17,7 +17,7 @@ An advanced, conversational AI platform providing deep, precise analysis of NBA 
 
 ## 🤖 How It Works: A Hybrid AI Architecture
 
-The scout's intelligence comes from two powerful techniques working together under the direction of an LLM Agent (Google's Gemini).
+The scout's intelligence comes from two powerful techniques working together under the direction of an LLM Agent (**OpenAI's GPT-4o-mini**).
 
 ### 1. Retrieval-Augmented Generation (RAG)
 
@@ -32,7 +32,7 @@ For quantitative questions like "What was Kobe's scoring average?", the LLM acts
 ## 🛠️ Technology Stack
 
 * **Backend:** Python & FastAPI
-* **AI Engine:** Google Gemini
+* **AI Engine:** **OpenAI (GPT-4o-mini)**
 * **Data Analysis:** Pandas
 * **Data Scraping:** nba_api
 * **Vector Search:** SentenceTransformers & ChromaDB
@@ -47,13 +47,23 @@ Get your own instance running in three steps.
 
 ### Step 1: Setup
 
-Clone the repository, install dependencies from `requirements.txt`, and add your Google AI API key to a `.env` file.
+Clone the repository, install dependencies from `requirements.txt` (which now includes the `openai` library), and add your OpenAI API key to a `.env` file.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 2: Data Ingestion
+### Step 2: Get Your API Key
+
+1.  Create an account on the [OpenAI Platform](https://platform.openai.com/).
+2.  Set up billing and navigate to the **API Keys** section.
+3.  Create a new secret key and copy it.
+4.  Create a file named `.env` in the root of the project folder and add your key:
+    ```
+    OPENAI_API_KEY="sk-YourSecretKeyHere"
+    ```
+
+### Step 3: Data Ingestion
 
 Run the ingestion script. This is a one-time, resumable process that builds the local databases (`chroma_db` and `all_games.csv`).
 
@@ -61,7 +71,7 @@ Run the ingestion script. This is a one-time, resumable process that builds the 
 python data_ingestion.py
 ```
 
-### Step 3: Run the App
+### Step 4: Run the App
 
 Once ingestion is complete, start the FastAPI server and navigate to the local URL.
 
