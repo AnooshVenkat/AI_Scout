@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-import openai # Use the OpenAI library
+import openai
 import chromadb
 import json
 from fastapi import FastAPI, HTTPException
@@ -359,3 +359,4 @@ async def scout_player(query: Query):
 @app.get("/")
 def read_root():
     return FileResponse('index.html')
+
